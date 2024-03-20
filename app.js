@@ -71,7 +71,7 @@ app.get("/",(req,res)=>{
 // all listings (INDEX ROUTE)
 app.get("/listings",async(req,res)=>{
     const allListing=await Listing.find();
-    console.log ("devops ediiting");
+    
     res.render("../views/listings/index.ejs",{allListing});
 });
 //new route 
