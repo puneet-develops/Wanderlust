@@ -3,4 +3,4 @@ services :
   web :
      image : sneha2004/wanderlust:latest
      ports :
-         - "8000:8000"
+         - "80:8000"
