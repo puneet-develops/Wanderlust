@@ -8,8 +8,8 @@
                 <div class="card-body">
                     <p class="card-text">
                        <b> <%= listitem.title %></b><br/>
-                        <%= listitem.description %> <br>
-                        &#8377;<%= listitem.price.toLocaleString("en-IN") %> <br>
+                        <%= listitem.description %> <br>                 
+                        &#8377;<%= listitem.price ? listitem.price.toLocaleString("en-IN") : "N/A" %> /night <br> 
                         <%= listitem.location %> <br>
                         <%= listitem.country %> <br>
                     </p>
