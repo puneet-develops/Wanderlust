@@ -10,6 +10,9 @@ const ExpressError = require("./utils/ExpressError.js");
 //const Review = require("./models/review.js");
 const listings=require("./routes/listing.js");
 const reviews=require("./routes/review.js")
+const session= require("express-session");
+const flash =require("connect-flash");
+
 
 // async function main(){
 //     await mongoose.connect(MONGO_URL)
@@ -37,7 +40,6 @@ main();
 // main().catch(console.error); 
 async function listDatabases(client) {
   databasesList = await client.db().admin().listDatabases();
-
   console.log("Databases:");
   databasesList.databases.forEach((db) => console.log(` - ${db.name}`));
 }
@@ -50,9 +52,30 @@ app.engine("ejs", engine);
 app.use(express.static(path.join(__dirname, "/public")));
 app.use(express.static("public"));
 
+
+const sessionOption={
+  secret:"thisismysecretcode",
+  resave:false,
+  saveUninitialized:true,
+  cookie:{
+    expires: Date.now()+7*24*60*60*1000,
+    maxAge: 7*24*60*60*1000,
+    httpOnly:true,
+  },
+}
+
 app.get("/", (req, res) => {
   res.send("hi this is root page");
 });
+
+app.use(session(sessionOption));
+app.use(flash());
+app.use((req,res,next)=>{
+  res.locals.success=req.flash("success");
+  res.locals.error=req.flash("error")
+  next();
+});
+
 // validatoins--------------------------
 
 
