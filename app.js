@@ -7,15 +7,20 @@ const path = require("path");
 const methodOverride = require("method-override");
 const engine = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
-//const Review = require("./models/review.js");
-const listings=require("./routes/listing.js");
-const reviews=require("./routes/review.js")
+const listingRouter=require("./routes/listing.js");
+const reviewRouter=require("./routes/review.js");
+const userRouter=require("./routes/user.js");
+const User=require("./models/user.js");
 const session= require("express-session");
 const flash =require("connect-flash");
+const passport=require('passport');
+const LocalStratergy=require('passport-local');
+
 
 
 // async function main(){
 //     await mongoose.connect(MONGO_URL)
+
 // };
 
 async function main() {
@@ -70,19 +75,37 @@ app.get("/", (req, res) => {
 
 app.use(session(sessionOption));
 app.use(flash());
+app.use(passport.initialize());
+passport.use(new LocalStratergy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
 app.use((req,res,next)=>{
   res.locals.success=req.flash("success");
   res.locals.error=req.flash("error")
   next();
 });
 
-// validatoins--------------------------
+// // fake user
+// app.get("/demouser",async(req,res)=>{
+//   let faker=new User({
+//     email:"student@gmail.com",
+//     username: "antino-student"
+//   });
+//   let registeredUser=await User.register(faker,"Antino@123");
+//   res.send(registeredUser);
+// });
+
 
 
 //listing related routes
-app.use("/listings",listings)
+app.use("/listings",listingRouter);
 // review related routes
-app.use("/listings/:id/reviews",reviews);
+app.use("/listings/:id/reviews",reviewRouter);
+//user router
+app.use("/",userRouter);
 
 // Express error handler
 app.all("*", (req, res, next) => {
