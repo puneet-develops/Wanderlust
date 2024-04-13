@@ -24,14 +24,12 @@ const LocalStratergy=require('passport-local');
 // };
 
 async function main() {
-  const uri =
-    "mongodb+srv://nikkuemwe:Rkrajput%40123@cluster0.lz3bm7p.mongodb.net/wanderlust?retryWrites=true&w=majority&appName=Cluster0";
+  const uri ="mongodb+srv://nikkuemwe:Rkrajput%40123@cluster0.lz3bm7p.mongodb.net/wanderlust?retryWrites=true&w=majority&appName=Cluster0";
   // const client = new MongoClient(uri)
   try {
     await mongoose.connect(uri);
     console.log("connected to db");
 
-    // Make the appropriate DB calls
     //await  listDatabases(client);
   } catch (e) {
     console.error(e);
@@ -76,28 +74,18 @@ app.get("/", (req, res) => {
 app.use(session(sessionOption));
 app.use(flash());
 app.use(passport.initialize());
+app.use(passport.session());
 passport.use(new LocalStratergy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
 app.use((req,res,next)=>{
   res.locals.success=req.flash("success");
   res.locals.error=req.flash("error")
+  res.locals.currUser=req.user;
   next();
 });
-
-// // fake user
-// app.get("/demouser",async(req,res)=>{
-//   let faker=new User({
-//     email:"student@gmail.com",
-//     username: "antino-student"
-//   });
-//   let registeredUser=await User.register(faker,"Antino@123");
-//   res.send(registeredUser);
-// });
-
 
 
 //listing related routes
@@ -111,8 +99,6 @@ app.use("/",userRouter);
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page not found"));
 });
-
-
 
 //middleware
 app.use((err, req, res, next) => {
