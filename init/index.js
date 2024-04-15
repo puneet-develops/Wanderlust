@@ -2,7 +2,7 @@ const mongoose=require("mongoose");
 const initdata=require("./data");
 const Listing=require("../models/listing.js");
 
-const MONGO_URL="mongodb://127.0.0.1:27017/wanderlust";
+const MONGO_URL="mongodb+srv://nikkuemwe:Rkrajput%40123@cluster0.lz3bm7p.mongodb.net/wanderlust?retryWrites=true&w=majority&appName=Cluster0";
 main().then(()=>{
     console.log("connected to database");
 }).catch((err)=>{
@@ -15,6 +15,7 @@ async function main(){
 
 const initDB=async ()=>{
     await Listing.deleteMany({});
+    initdata.data=initdata.data.map((obj)=>({...obj,owner:"661a605f3fa51673e7ff82e1"}))
     await Listing.insertMany(initdata.data);
     console.log("data was initialized");
 };
