@@ -2,7 +2,7 @@
 <div class="row mt-3 ">
     <div class="col-8 offset-2" >
 <h3> Edit your listing</h3>
-  <form action="/listings/<%= listing._id %>?_method=PUT" method="post" class="needs-validation" novalidate>
+  <form action="/listings/<%= listing._id %>?_method=PUT" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
     <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input name="listing[title]" value="<%= listing.title %>" type="text" class="form-control" required>
@@ -13,15 +13,16 @@
         <textarea name="listing[description]" class="form-control" required><%= listing.description %></textarea>
         <div class="invalid-feedback">Please Provide Short Note</div>
     </div>
+    
+    <!-- for creating the preview on editing page
+       <div class="mb-3"> 
+      <img src="">
+    </div> -->
+    
     <div class="mb-3">
-        <label for="image_name" class="form-label">Image Name</label>
-        <input name="listing[image][filename]" value="<%= listing.image.filename %>" class="form-control" >
-    </div>
-    <div class="mb-3">
-        <label for="image_url" class="form-label">Image Link</label>
-        <input name="listing[image][url]" value="<%= listing.image.url %>" type="text" class="form-control">
-    </div>
-
+      <label for="url" class="form-label">Upload New Image</label>
+      <input name="listing[image][url]"   type="file" class="form-control" >
+  </div>
     <div class="row">
        <div class="mb-3 col-md-4">
         <label for="price" class="form-label">Price</label>
