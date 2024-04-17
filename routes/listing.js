@@ -19,7 +19,7 @@ router
     validateListing,
     wrapAsync(listingController.createListings)
   );
-  
+  //checking depliyement
   router.get("/new", isLoggedIn, listingController.renderNewForm);
 router
   .route("/:id")
@@ -43,4 +43,4 @@ router.get(
   wrapAsync(listingController.renderEditForm)
 );
 
-module.exports = router;
+module.exports = router;  
