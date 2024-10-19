@@ -1,6 +1,7 @@
 version : "3.3"
 services :
   web :
-     image : sneha2004/wanderlust:latest
+     build:
+        context: .
      ports :
-         - "80:8000"  
+         - "8000:8000"  
